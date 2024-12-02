@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Patient List</title>
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/5.3.3/css/bootstrap.min.css">
+</head>
+<body>
+<h1>Hello Patient</h1>
+
+<div class="card text-center m-3 p-3">
+    <div class="card-header">
+        <form class="row row-cols-lg-auto g-3 align-items-center" method="get" th:action="@{/index}">
+            <div class="col-md-4 mb-3">
+                <label for="validationCustom01" class="form-label">Name</label>
+                <input type="text" class="form-control" id="validationCustom01" name="keyword" th:value="${keyword}" required>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <div class="col-12">
+                <button class="btn btn-primary" type="submit">Search</button>
+            </div>
+        </form>
+    </div>
+    <div class="card-body m-1">
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Date</th>
+                <th>Malade</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="patient:${patientList}">
+                <td th:text="${patient.ID}"></td>
+                <td th:text="${patient.name}"></td>
+                <td th:text="${patient.date}"></td>
+                <td th:text="${patient.malade}"></td>
+                <td>
+                    <a class="btn btn-danger" onclick="return confirm('You Sure!!')"
+                       th:href="@{deletepatient(id=${patient.ID})}">Delete</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer text-body-secondary text-center">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:each="page,status :${pages}">
+                <a class="page-link" th:classappend="${status.index==CurrentPage?'active':''}" th:href="@{/index(page=${status.index} , keyword=${keyword})}" th:text="${status.index}"></a>
+            </li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>
